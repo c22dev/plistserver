@@ -51,11 +51,16 @@ async fn generate_plist(query: web::Query<PlistQuery>) -> impl Responder {
         .body(plist_xml)
 }
 
+async fn ping() -> impl Responder {
+    HttpResponse::Ok().body("pong")
+}
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     HttpServer::new(|| {
         App::new()
             .route("/genPlist", web::get().to(generate_plist))
+            .route("/ping", web::get().to(ping))
     })
     .bind("0.0.0.0:10000")?
     .run()
